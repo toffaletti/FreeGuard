@@ -1,4 +1,5 @@
-/*	$OpenBSD: arc4random_uniform.c,v 1.2 2015/09/13 08:31:47 guenther Exp $	*/
+/*	$OpenBSD: arc4random_uniform.c,v 1.2 2015/09/13 08:31:47 guenther Exp $
+ */
 
 /*
  * Copyright (c) 2008, Damien Miller <djm@openbsd.org>
@@ -16,9 +17,9 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include <sys/types.h>
-#include <stdlib.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <sys/types.h>
 
 extern uint32_t arc4random(void);
 
@@ -32,28 +33,26 @@ extern uint32_t arc4random(void);
  * [2**32 % upper_bound, 2**32) which maps back to [0, upper_bound)
  * after reduction modulo upper_bound.
  */
-uint32_t
-arc4random_uniform(uint32_t upper_bound)
-{
-	uint32_t r, min;
+uint32_t arc4random_uniform(uint32_t upper_bound) {
+  uint32_t r, min;
 
-	if (upper_bound < 2)
-		return 0;
+  if (upper_bound < 2)
+    return 0;
 
-	/* 2**32 % x == (2**32 - x) % x */
-	min = -upper_bound % upper_bound;
+  /* 2**32 % x == (2**32 - x) % x */
+  min = -upper_bound % upper_bound;
 
-	/*
-	 * This could theoretically loop forever but each retry has
-	 * p > 0.5 (worst case, usually far better) of selecting a
-	 * number inside the range we need, so it should rarely need
-	 * to re-roll.
-	 */
-	for (;;) {
-		r = arc4random();
-		if (r >= min)
-			break;
-	}
+  /*
+   * This could theoretically loop forever but each retry has
+   * p > 0.5 (worst case, usually far better) of selecting a
+   * number inside the range we need, so it should rarely need
+   * to re-roll.
+   */
+  for (;;) {
+    r = arc4random();
+    if (r >= min)
+      break;
+  }
 
-	return r % upper_bound;
+  return r % upper_bound;
 }
