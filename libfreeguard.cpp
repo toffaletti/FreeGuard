@@ -33,6 +33,10 @@
 #include "sse2rng.h"
 #endif
 
+#if __APPLE__
+intptr_t globalStackAddr;
+#else
+
 void heapinitialize();
 __attribute__((constructor)) void initializer() { heapinitialize(); }
 
@@ -132,6 +136,8 @@ extern "C" int freeguard_libc_start_main(main_fn_t main_fn, int argc,
 __thread int _threadIndex;
 #endif
 
+#endif // __APPLE__
+
 // Variables used by our pre-init private allocator
 typedef enum {
   E_HEAP_INIT_NOT = 0,
@@ -155,6 +161,9 @@ void *xxpvalloc(size_t);
 void *xxalloca(size_t);
 int xxposix_memalign(void **, size_t, size_t);
 
+#if __APPLE__
+} // extern "C"
+#else
 // Function aliases
 void free(void *) __attribute__((weak, alias("xxfree")));
 void *malloc(size_t) __attribute__((weak, alias("xxmalloc")));
@@ -175,6 +184,7 @@ __attribute__((destructor)) void finalizer() {
   PRDBG("%lu large objects (>%d) were allocated", numLargeObjects,
         LARGE_OBJECT_THRESHOLD);
 }
+#endif // __APPLE__
 
 void heapinitialize() {
   if (heapInitStatus == E_HEAP_INIT_NOT) {

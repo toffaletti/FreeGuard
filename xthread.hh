@@ -25,6 +25,10 @@
 #ifndef __XTHREAD_HH__
 #define __XTHREAD_HH__
 
+#if __APPLE__
+#include "darwin_pthread_spinlock.h"
+#endif
+
 #include "hashfuncs.hh"
 #include "hashheapallocator.hh"
 #include "hashmap.hh"
@@ -50,9 +54,8 @@ class xthread {
 
 public:
   static xthread &getInstance() {
-    static char buf[sizeof(xthread)];
-    static xthread *xthreadObject = new (buf) xthread();
-    return *xthreadObject;
+    static xthread xthreadObject;
+    return xthreadObject;
   }
 
   void initialize() {
@@ -110,7 +113,11 @@ public:
   // function
   void initializeCurrentThread(thread_t *thread) {
     SRAND(time(NULL));
+#if __APPLE__
+    thread->tid = syscall(SYS_thread_selfid);
+#else
     thread->tid = syscall(__NR_gettid);
+#endif
 #ifndef CUSTOMIZED_STACK
     setThreadIndex(thread->index);
 #endif

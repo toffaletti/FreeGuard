@@ -67,7 +67,7 @@
   {                                                                            \
     if (DEBUG_LEVEL < 1) {                                                     \
       ::snprintf(getThreadBuffer(), LOG_SIZE,                                  \
-                 ESC_INF "%lx [INFO]: %20s:%-4d: " fmt ESC_END "\n",           \
+                 ESC_INF "%p [INFO]: %20s:%-4d: " fmt ESC_END "\n",           \
                  pthread_self(), __FILE__, __LINE__, ##__VA_ARGS__);           \
       OUTPUT(OUTFD, getThreadBuffer(), strlen(getThreadBuffer()));             \
     }                                                                          \
@@ -80,7 +80,7 @@
   {                                                                            \
     if (DEBUG_LEVEL < 2) {                                                     \
       ::snprintf(getThreadBuffer(), LOG_SIZE,                                  \
-                 ESC_DBG "%lx [DBG]: %20s:%-4d: " fmt ESC_END "\n",            \
+                 ESC_DBG "%p [DBG]: %20s:%-4d: " fmt ESC_END "\n",            \
                  pthread_self(), __FILE__, __LINE__, ##__VA_ARGS__);           \
       OUTPUT(OUTFD, getThreadBuffer(), strlen(getThreadBuffer()));             \
     }                                                                          \
@@ -93,7 +93,7 @@
   {                                                                            \
     if (DEBUG_LEVEL < 3) {                                                     \
       ::snprintf(getThreadBuffer(), LOG_SIZE,                                  \
-                 ESC_WRN "%lx [WRN]: %20s:%-4d: " fmt ESC_END "\n",            \
+                 ESC_WRN "%p [WRN]: %20s:%-4d: " fmt ESC_END "\n",            \
                  pthread_self(), __FILE__, __LINE__, ##__VA_ARGS__);           \
       OUTPUT(OUTFD, getThreadBuffer(), strlen(getThreadBuffer()));             \
     }                                                                          \
@@ -111,7 +111,7 @@
   {                                                                            \
     if (DEBUG_LEVEL < 4) {                                                     \
       ::snprintf(getThreadBuffer(), LOG_SIZE,                                  \
-                 ESC_ERR "%lx [ERR]: %20s:%-4d: " fmt ESC_END "\n",            \
+                 ESC_ERR "%p [ERR]: %20s:%-4d: " fmt ESC_END "\n",            \
                  pthread_self(), __FILE__, __LINE__, ##__VA_ARGS__);           \
       OUTPUT(OUTFD, getThreadBuffer(), strlen(getThreadBuffer()));             \
     }                                                                          \
@@ -133,7 +133,7 @@
 #define FATAL(fmt, ...)                                                        \
   {                                                                            \
     ::snprintf(getThreadBuffer(), LOG_SIZE,                                    \
-               ESC_ERR "%lx [FATALERROR]: %20s:%-4d: " fmt ESC_END "\n",       \
+               ESC_ERR "%p [FATALERROR]: %20s:%-4d: " fmt ESC_END "\n",       \
                pthread_self(), __FILE__, __LINE__, ##__VA_ARGS__);             \
     OUTPUT(OUTFD, getThreadBuffer(), strlen(getThreadBuffer()));               \
     exit(-1);                                                                  \

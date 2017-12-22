@@ -25,6 +25,11 @@
 #ifndef __BIBOPHEAP_H__
 #define __BIBOPHEAP_H__
 
+#if __APPLE__
+#define MADV_NOHUGEPAGE 0
+#include "darwin_pthread_spinlock.h"
+#endif
+
 #include "errmsg.hh"
 #include "log.hh"
 #include "mm.hh"
@@ -121,9 +126,8 @@ private:
 
 public:
   static BibopHeap &getInstance() {
-    static char buf[sizeof(BibopHeap)];
-    static BibopHeap *theOneTrueObject = new (buf) BibopHeap();
-    return *theOneTrueObject;
+    static BibopHeap theOneTrueObject;
+    return theOneTrueObject;
   }
 
   void *initialize() {

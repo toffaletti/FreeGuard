@@ -29,7 +29,7 @@ endif
 #CFLAGS += -O2 -Wall --std=c++11 -g -fno-omit-frame-pointer -DDEBUG_LEVEL=$(DEBUG_LEVEL) -DCUSTOMIZED_STACK -DENABLE_GUARDPAGE -DCFREELIST
 #CFLAGS += -O2 -Wall --std=c++11 -g -fno-omit-frame-pointer -DDEBUG_LEVEL=$(DEBUG_LEVEL) -DCUSTOMIZED_STACK -DENABLE_GUARDPAGE -DRANDOM_GUARD
 #CFLAGS += -O2 -Wall --std=c++11 -g -fno-omit-frame-pointer -DDEBUG_LEVEL=$(DEBUG_LEVEL) -DCUSTOMIZED_STACK -DENABLE_GUARDPAGE -DRANDOM_GUARD
-CFLAGS += -O2 -Wall --std=c++11 -g -fno-omit-frame-pointer -DNDEBUG -DCUSTOMIZED_STACK -DENABLE_GUARDPAGE -DRANDOM_GUARD -DUSE_CANARY -DFIFO_FREELIST
+CFLAGS += -O2 -Wall --std=c++11 -g -fno-omit-frame-pointer -DNDEBUG -DCUSTOMIZED_STACK -DENABLE_GUARDPAGE -DRANDOM_GUARD -DUSE_CANARY -DFIFO_FREELIST -D_XOPEN_SOURCE
 CFLAGS2 = -O2 --std=c++11 -g -fno-omit-frame-pointer
 
 # NDEBUG overrules DEBUG_LEVEL macro in log.hh
@@ -65,7 +65,7 @@ rng/arc4random_uniform.o: rng/arc4random_uniform.c
 
 
 libfreeguard.so: $(DEPS)
-	$(CXX) $(CFLAGS) $(INCLUDE_DIRS) -shared -fPIC $(SRCS) -o libfreeguard.so -ldl -lpthread -lrt
+	$(CXX) $(CFLAGS) $(INCLUDE_DIRS) -shared -fPIC $(SRCS) -o libfreeguard.so -ldl -lpthread
 
 clean:
 	rm -f $(TARGETS)

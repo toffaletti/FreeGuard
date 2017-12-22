@@ -47,9 +47,8 @@ private:
 
 public:
   static BigHeap &getInstance() {
-    static char buf[sizeof(BigHeap)];
-    static BigHeap *theOneTrueObject = new (buf) BigHeap();
-    return *theOneTrueObject;
+    static BigHeap theOneTrueObject;
+    return theOneTrueObject;
   }
 
   // Initialization of the Big Heap
@@ -117,7 +116,7 @@ public:
 
     // PRDBG("BigHeap freed %p (begins @ %p), size %zu (actual %zu), objStatus @
     // %p", 				ptr, objStatus->start, objStatus->size,
-    //objStatus->pageUpSize, objStatus);
+    // objStatus->pageUpSize, objStatus);
     acquireGlobalLock();
     _xmap.erase(ptr, sizeof(void *));
     releaseGlobalLock();
@@ -130,8 +129,6 @@ public:
   void releaseGlobalLock() { spin_unlock(); }
 
 private:
-  size_t _bigObjectStatusSize = sizeof(bigObjectStatus);
-  unsigned _bigObjectStatusSizeShiftBits = LOG2(_bigObjectStatusSize);
   pthread_spinlock_t _spin_lock;
   typedef HashMap<void *, bigObjectStatus *, HeapAllocator> objectHashMap;
   objectHashMap _xmap;

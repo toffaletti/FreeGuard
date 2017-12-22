@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #define PREV_INSTRUCTION_OFFSET 1
 #define FILENAMELENGTH 256

@@ -26,6 +26,7 @@
 #define __DLIST_H__
 
 #include <stdio.h>
+#include "slist.h"
 
 typedef struct dlist {
   struct slist *next;
